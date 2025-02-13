@@ -18,6 +18,7 @@ class ProductRepositoryTest {
     ProductRepository productRepository;
     @BeforeEach
     void setUp() {
+        productRepository = new ProductRepository();
     }
     @Test
     void testCreateAndFind() {
@@ -63,4 +64,54 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(products.hasNext());
     }
+
+
+    @Test
+    void testUpdateProduct_Success() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        updatedProduct.setProductName("Sampo Cap Baru");
+        updatedProduct.setProductQuantity(150);
+        Product result = productRepository.update(updatedProduct);
+
+        assertNotNull(result);
+        assertEquals("Sampo Cap Baru", result.getProductName());
+        assertEquals(150, result.getProductQuantity());
+    }
+
+    @Test
+    void testUpdateProduct_NotFound() {
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("non-existent-id");
+        updatedProduct.setProductName("Sampo Cap Baru");
+        updatedProduct.setProductQuantity(150);
+        Product result = productRepository.update(updatedProduct);
+
+        assertNull(result);
+    }
+
+    @Test
+    void testDeleteProduct_Success() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        boolean isDeleted = productRepository.delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        assertTrue(isDeleted);
+    }
+
+    @Test
+    void testDeleteProduct_NotFound() {
+        boolean isDeleted = productRepository.delete("non-existent-id");
+        assertFalse(isDeleted);
+    }
+
 }
