@@ -28,4 +28,14 @@ public class ProductRepository {
         }
         return null;
     }
+
+    public Product update(Product updatedProduct) {
+        for (Product product : productData) {
+            if(product.getProductId().equals(updatedProduct.getProductId())) {
+                product = updatedProduct;
+                return product;
+            }
+        }
+        return null;
+    }
 }
