@@ -20,15 +20,15 @@ public class ProductRepository {
         return productData.iterator();
     }
 
-
     public boolean delete(String productId) {
-        for(Product product : productData) {
+        for (Product product : productData) {
             if (product.getProductId().equals(productId)) {
                 productData.remove(product);
                 return true;
             }
         }
         return false;
+    }
 
     public Product findById(String productId) {
         for (Product product : productData) {
@@ -49,6 +49,5 @@ public class ProductRepository {
             }
         }
         return null;
-
     }
 }

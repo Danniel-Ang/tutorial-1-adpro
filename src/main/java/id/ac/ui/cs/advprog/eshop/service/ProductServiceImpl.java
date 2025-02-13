@@ -29,13 +29,13 @@ public class ProductServiceImpl implements ProductService {
 
     public void delete(String productId) {
         productRepository.delete(productId);
-
-    public Product findById(String id) {
-        return productRepository.findById(id);
+    }
+    
+    public Product findById(String productId) {
+        return productRepository.findById(productId);
     }
 
     public Product update(Product product) {
         return productRepository.update(product);
-
     }
 }
