@@ -114,4 +114,23 @@ class ProductRepositoryTest {
         assertFalse(isDeleted);
     }
 
+    @Test
+    void testFindProductById() {
+        Product product = new Product();
+        Product savedProduct = productRepository.create(product);
+        Product foundProduct = productRepository.findById(savedProduct.getProductId());
+        assertEquals(savedProduct, foundProduct);
+    }
+
+    @Test
+    void testFindProductById_NotFound() {
+        Product product = new Product();
+        product.setProductId("non-existent-id");
+        productRepository.create(product);
+        productRepository.delete("non-existent-id");
+        Product foundProduct = productRepository.findById(product.getProductId());
+        assertNull(foundProduct);
+    }
+
+
 }
