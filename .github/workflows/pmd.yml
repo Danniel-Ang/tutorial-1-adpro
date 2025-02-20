@@ -1,6 +1,6 @@
-name : PMD
+name: PMD
 
-on :
+on:
   push:
   pull_request:
 
@@ -26,11 +26,9 @@ jobs:
           rulesets: 'rulesets/java/quickstart.xml'
           sourcePath: 'src/'
           analyzeModifiedFilesOnly: 'false'
-          format: 'text'
-          failOnViolation: true
-
-      # Upload the results to GitHub's code scanning dashboard.
+          createGitHubAnnotations: true
       - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@v2 # v2.2.4
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: pmd-report.sarif
+          artifact_name: pmd-report
