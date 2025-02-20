@@ -1,4 +1,4 @@
-name: Code Quality Check
+name: PMD
 
 on:
   push:
@@ -19,16 +19,16 @@ jobs:
           java-version: "21"
           cache: "gradle"
 
-      - name: Download and Extract PMD
+      - name: Download and Extract PMD 7.0.0-rc4
         run: |
           wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0-rc4/pmd-dist-7.0.0-rc4-bin.zip
           unzip pmd-dist-7.0.0-rc4-bin.zip
           echo "PMD_HOME=$(pwd)/pmd-bin-7.0.0-rc4" >> $GITHUB_ENV
-          echo "$PMD_HOME/bin" >> $GITHUB_PATH
+          echo "$(pwd)/pmd-bin-7.0.0-rc4/bin" >> $GITHUB_PATH
 
       - name: Run PMD Analysis
         run: |
-          pmd check -d src/main/java -R rulesets/java/quickstart.xml -f sarif -r pmd-report.sarif
+          $PMD_HOME/bin/run.sh pmd -d src/main/java -R rulesets/java/quickstart.xml -f sarif -r pmd-report.sarif
 
       - name: Upload PMD Report to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
