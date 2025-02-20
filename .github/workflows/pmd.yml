@@ -1,9 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: pmd
+name: Code Quality Check
 
 on:
   push:
@@ -11,29 +6,35 @@ on:
 
 permissions:
   contents: read
+  security-events: write
 
 jobs:
-  pmd-code-scan:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    runs-on: ubuntu-latest
+  pmd-analysis:
+    name: Run PMD Analysis
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 11
+      - name: Check out the Git Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java toolchain
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
           distribution: 'temurin'
-      - name: Run PMD
-        id: pmd
-        uses: pmd/pmd-github-action@967a81f8b657c87f7c3e96b62301cb1a48efef29
-        with:
-          rulesets: 'rulesets/java/quickstart.xml'
-          sourcePath: 'src/main/java'
-          analyzeModifiedFilesOnly: false
-      - name: Upload SARIF file
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Download and set up PMD
+        run: |
+          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0-rc4/pmd-dist-7.0.0-rc4-bin.zip
+          unzip pmd-dist-7.0.0-rc4-bin.zip
+          echo "PMD_HOME=$(pwd)/pmd-bin-7.0.0-rc4" >> $GITHUB_ENV
+          echo "$PMD_HOME/bin" >> $GITHUB_PATH
+
+      - name: Run PMD Analysis
+        run: |
+          pmd -d src/main/java -R rulesets/java/quickstart.xml -f sarif -r pmd-report.sarif
+
+      - name: Upload PMD Report to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: pmd-report.sarif
