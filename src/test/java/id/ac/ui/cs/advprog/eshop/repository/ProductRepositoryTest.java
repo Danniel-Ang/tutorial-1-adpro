@@ -87,6 +87,9 @@ class ProductRepositoryTest {
 
     @Test
     void testUpdateProduct_NotFound() {
+        Product product = new Product();
+        product.setProductId("existent-id");
+        productRepository.create(product);
         Product updatedProduct = new Product();
         updatedProduct.setProductId("non-existent-id");
         updatedProduct.setProductName("Sampo Cap Baru");
@@ -110,6 +113,9 @@ class ProductRepositoryTest {
 
     @Test
     void testDeleteProduct_NotFound() {
+        Product product = new Product();
+        product.setProductId("existent-id");
+        productRepository.create(product);
         boolean isDeleted = productRepository.delete("non-existent-id");
         assertFalse(isDeleted);
     }
@@ -125,10 +131,9 @@ class ProductRepositoryTest {
     @Test
     void testFindProductById_NotFound() {
         Product product = new Product();
-        product.setProductId("non-existent-id");
+        product.setProductId("existent-id");
         productRepository.create(product);
-        productRepository.delete("non-existent-id");
-        Product foundProduct = productRepository.findById(product.getProductId());
+        Product foundProduct = productRepository.findById("non-existent-id");
         assertNull(foundProduct);
     }
 
