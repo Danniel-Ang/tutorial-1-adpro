@@ -4,10 +4,6 @@ on:
   push:
   pull_request:
 
-permissions:
-  contents: read
-  security-events: write
-
 jobs:
   pmd-analysis:
     name: Run PMD Analysis
@@ -19,11 +15,11 @@ jobs:
       - name: Set up Java toolchain
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
+          distribution: "temurin"
+          java-version: "21"
+          cache: "gradle"
 
-      - name: Download and set up PMD
+      - name: Download and Extract PMD
         run: |
           wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0-rc4/pmd-dist-7.0.0-rc4-bin.zip
           unzip pmd-dist-7.0.0-rc4-bin.zip
@@ -32,7 +28,7 @@ jobs:
 
       - name: Run PMD Analysis
         run: |
-          pmd -d src/main/java -R rulesets/java/quickstart.xml -f sarif -r pmd-report.sarif
+          pmd check -d src/main/java -R rulesets/java/quickstart.xml -f sarif -r pmd-report.sarif
 
       - name: Upload PMD Report to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
