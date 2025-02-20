@@ -1,36 +1,36 @@
-name: PMD
+name : PMD
 
-on:
+on :
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
-  pmd-analysis:
-    name: Run PMD Analysis
+  test:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    name: Run tests
     runs-on: ubuntu-22.04
     steps:
-      - name: Check out the Git Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java toolchain
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
-          distribution: "temurin"
-          java-version: "21"
-          cache: "gradle"
+          distribution: 'temurin'
+          java-version: '11'
+      - uses: pmd/pmd-github-action@v1
+        with:
+          rulesets: 'rulesets/java/quickstart.xml'
+          sourcePath: 'src/'
+          analyzeModifiedFilesOnly: 'false'
+          format: 'text'
+          failOnViolation: true
 
-      - name: Download and Extract PMD 7.0.0-rc4
-        run: |
-          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0-rc4/pmd-dist-7.0.0-rc4-bin.zip
-          unzip pmd-dist-7.0.0-rc4-bin.zip
-          echo "PMD_HOME=$(pwd)/pmd-bin-7.0.0-rc4" >> $GITHUB_ENV
-          echo "$(pwd)/pmd-bin-7.0.0-rc4/bin" >> $GITHUB_PATH
-
-      - name: Run PMD Analysis
-        run: |
-          $PMD_HOME/bin/run.sh pmd -d src/main/java -R rulesets/java/quickstart.xml -f sarif -r pmd-report.sarif
-
-      - name: Upload PMD Report to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
+      # Upload the results to GitHub's code scanning dashboard.
+      - name: "Upload to code-scanning"
+        uses: github/codeql-action/upload-sarif@v2 # v2.2.4
         with:
           sarif_file: pmd-report.sarif
