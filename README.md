@@ -1,4 +1,7 @@
 Danniel / 2306152090 / Adpro A
+
+<details>
+<summary> Tutorial 1 </summary>
 # Reflection 1: Refleksi Implementasi Fitur Baru pada Spring Boot
 
 ### Clean Code
@@ -60,3 +63,33 @@ Danniel / 2306152090 / Adpro A
    dimana kode tersebut juga harus diubah kembali.
 
    Adapun usaha untuk memperbaiki hal ini adalah dengan mencoba untuk membuat base class yang berisi setup driver selenium, konfigurasi URL, dan lain lain. Jika ada test yang memiliki pola yang sama dengan variasi kecil (misalnya, input produk yang berbeda), kita bisa menggunakan `@ParameterizedTest` di JUnit untuk menghindari duplikasi logika yang sama.
+</details>
+
+
+<details>
+<summary> Tuturial 2 </summary>
+# Daftar Masalah Kualitas Kode yang Diperbaiki
+
+1. **Pinned Dependency**  
+   Masalah pinned dependency teridentifikasi dalam workflow CI/CD. Versi dari actions yang digunakan dapat berubah seiring waktu, yang dapat menyebabkan perilaku yang tidak terduga. Sebagai contoh, baris:  
+   `uses: actions/upload-artifact@v4`  
+   telah dimodifikasi untuk merujuk pada commit SHA tertentu, sehingga memastikan stabilitas dan prediktabilitas:  
+   `uses: actions/upload-artifact@<commit-sha>`.  
+   Untuk memperbaiki masalah ini, saya menggunakan [SecureRepo](https://app.stepsecurity.io/securerepo), yang membantu dalam mengidentifikasi dan mengelola dependensi yang tidak terpin, serta memberikan rekomendasi untuk menggunakan versi yang lebih aman.
+
+2. **Lisensi**  
+   Repository tidak memiliki file lisensi, yang penting untuk menjelaskan syarat penggunaan kode. Saya menyelesaikan hal ini dengan menambahkan template lisensi MIT yang tersedia di GitHub.
+
+3. **Kebijakan Keamanan**  
+   Tidak adanya file `SECURITY.md` dalam repository merupakan risiko, karena tidak memberikan panduan untuk melaporkan kerentanan keamanan. Saya mengatasi hal ini dengan membuat dan menambahkan file `SECURITY.md` untuk menjelaskan proses pelaporan masalah keamanan.
+
+4. **Alat Pembaruan Dependensi**  
+   Untuk memastikan bahwa dependensi tetap terbarui, saya mengimplementasikan Dependabot. Alat ini secara otomatis memeriksa dependensi yang sudah usang dan membuat pull request untuk memperbaruinya, membantu menjaga keamanan dan stabilitas proyek.
+
+# CI/CD
+**Continuous Integration (CI)** adalah proses menggabungkan kode yang telah diubah ke dalam repositori secara rutin, diikuti dengan proses build dan pengujian otomatis. Hal ini memungkinkan tim untuk segera mendeteksi dan memperbaiki kesalahan pada kode sehingga integrasi berjalan lancar.
+
+**Continuous Deployment (CD)** merupakan langkah lanjutan di mana kode yang telah lulus pengujian secara otomatis diterapkan ke lingkungan produksi tanpa intervensi manual. Dengan demikian, setiap perubahan yang telah terverifikasi dapat segera diakses oleh pengguna.
+
+Berdasarkan workflow yang telah saya buat, proses CI telah berjalan dengan baik karena setiap kali terjadi push atau adanya pull request baru, kode secara otomatis diuji melalui serangkaian proses build dan unit test. Selain itu, untuk CD, saya telah mengimplementasikan mekanisme auto-deploy ke PaaS, yaitu Koyeb. Aplikasi dapat diakses melalui tautan berikut: [https://condemned-amelina-danniel-98de4339.koyeb.app](https://condemned-amelina-danniel-98de4339.koyeb.app).
+</details>
