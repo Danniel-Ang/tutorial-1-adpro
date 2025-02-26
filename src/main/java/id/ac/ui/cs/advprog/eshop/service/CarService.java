@@ -8,5 +8,5 @@ public interface CarService {
     public List<Car> findAll();
     Car findById(String carId);
     public void update(String carId ,Car car);
-    public void delete(String carId);
+    public void deleteCarById(String carId);
 }
