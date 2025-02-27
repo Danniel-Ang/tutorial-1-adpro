@@ -93,3 +93,75 @@ Danniel / 2306152090 / Adpro A
 
 Berdasarkan workflow yang telah saya buat, proses CI telah berjalan dengan baik karena setiap kali terjadi push atau adanya pull request baru, kode secara otomatis diuji melalui serangkaian proses build dan unit test. Selain itu, untuk CD, saya telah mengimplementasikan mekanisme auto-deploy ke PaaS, yaitu Koyeb. Aplikasi dapat diakses melalui tautan berikut: [https://condemned-amelina-danniel-98de4339.koyeb.app](https://condemned-amelina-danniel-98de4339.koyeb.app).
 </details>
+
+<details>
+<summary> Tutorial 3 </summary>
+
+# Refleksi Prinsip SOLID pada Proyek E-Shop
+---
+
+## 1) Prinsip SOLID Apa Saja yang Saya Terapkan?
+
+### Single Responsibility Principle (SRP)
+- **Definisi:** Sebuah class seharusnya memiliki satu alasan untuk berubah, artinya ia harus mengenkapsulasi satu aspek fungsionalitas.
+- **Penerapan:**
+   - **Controllers:** Saya memisahkan `ProductController` dan `CarController` sehingga masing-masing hanya menangani logika domainnya masing-masing. Hal ini mencegah satu controller mengelola tanggung jawab yang tidak terkait.
+   - **Services & Repositories:** Setiap service (misalnya, `ProductService` dan `CarService`) dan repository (misalnya, `ProductRepository` dan `CarRepository`) bertanggung jawab atas satu domain, sehingga memastikan tanggung jawab yang terfokus.
+
+### Open/Closed Principle (OCP)
+- **Definisi:** Sebuah entitas harus terbuka untuk ekstensi namun tertutup untuk modifikasi. Fungsionalitas baru sebaiknya ditambahkan dengan memperluas kode, bukan dengan mengubah kode yang sudah ada.
+- **Penerapan:**
+   - **Interface-Based Design:** Saya membuat interface khusus (seperti `ProductService` dan `CarService`) yang memungkinkan saya memperluas fungsionalitas (misalnya, dengan menambahkan tipe produk baru) tanpa mengubah implementasi yang sudah ada dan telah diuji.
+   - **Separation of Concerns:** Dengan adanya controller dan service yang terpisah, penambahan fitur baru dilakukan dengan menambahkan class baru, bukan dengan mengubah kode yang sudah ada.
+
+### Liskov Substitution Principle (LSP)
+- **Definisi:** Objek dari superclass seharusnya dapat digantikan dengan objek dari subclass tanpa mempengaruhi kebenaran program.
+- **Penerapan:**
+   - **Avoiding Faulty Inheritance:** Saya menghilangkan hubungan inheritance antara `CarController` dan `ProductController` untuk memastikan bahwa setiap controller dapat berfungsi secara independen tanpa perilaku yang tidak terduga. Dengan cara ini, setiap class yang mengimplementasikan service interface dapat menggantikan class lain tanpa merusak aplikasi.
+
+### Interface Segregation Principle (ISP)
+- **Definisi:** Entitas tidak seharusnya dipaksa untuk bergantung pada metode yang tidak mereka gunakan. Interface yang besar sebaiknya dipecah menjadi yang lebih kecil dan spesifik.
+- **Penerapan:**
+   - **Specific Service Interfaces:** Dengan mendefinisikan interface yang terfokus untuk produk dan mobil, controller hanya bergantung pada metode yang relevan dengan domainnya, sehingga mengurangi ketergantungan yang tidak perlu.
+
+### Dependency Inversion Principle (DIP)
+- **Definisi:** Entitas yang kompleks seharusnya bergantung pada abstraksi, bukan pada implementasi konkrit. Baik entitas yang kompleks maupun yang tidak, harus bergantung pada abstraksi.
+- **Penerapan:**
+   - **Abstraction in Dependency Injection:** Controller sekarang bergantung pada service interface (misalnya, `CarService`) daripada implementasi konkritnya. Hal ini meningkatkan testability.
+
+---
+
+## 2) Keuntungan Menerapkan Prinsip SOLID
+
+- **Enhanced Maintainability:**
+   - *Contoh:* Dengan penerapan SRP, perubahan pada fungsionalitas terkait car tidak memengaruhi product. Isolasi ini akan memudahkan debugging dan modifikasi kedepannya.
+
+- **Kemudahan Ekstensi:**
+   - *Contoh:* Berkat OCP, jika tipe produk baru perlu ditambahkan, saya cukup membuat service dan controller baru. Hal ini meminimalkan risiko untuk memengaruhi fungsionalitas yang sudah ada.
+
+- **Peningkatan Testability:**
+   - *Contoh:* Dengan mengikuti DIP, controller bergantung pada abstraksi. Hal ini akan memudahkan unit testing karena implementasi mock dapat menggantikan service yang nyata tanpa mengubah kode controller.
+
+- **Desain yang Kuat:**
+   - *Contoh:* LSP menjamin bahwa mengganti implementasi service dengan yang lain (selama mematuhi interface) tidak akan merusak aplikasi.
+
+---
+
+## 3) Kerugian Jika Tidak Menerapkan Prinsip SOLID
+
+- **Ketergantungan yang Erat dan Rentan:**
+   - *Contoh:* Tanpa SRP, sebuah controller yang mengelola logika mobil dan produk sekaligus bisa rusak ketika terjadi perubahan pada salah satu domain.
+
+- **Pemeliharaan dan Skalabilitas yang Sulit:**
+   - *Contoh:* Pelanggaran terhadap OCP berarti setiap fitur baru memerlukan modifikasi pada class yang sudah ada. Hal ini meningkatkan risiko bug dan membuat sistem sulit dipelihara.
+
+- **Testability yang Menurun:**
+   - *Contoh:* Mengabaikan DIP memaksa entitas yang kompleks bergantung pada implementasi spesifik, sehingga pengujian dengan unit test.
+
+- **Interface yang Terlalu Besar dan Berlebihan:**
+   - *Contoh:* Tanpa ISP, controller mungkin dipaksa untuk mengimplementasikan atau berinteraksi dengan metode yang tidak mereka butuhkan.
+  
+- **Masalah Substitusi:**
+   - *Contoh:* Jika LSP tidak diikuti, mengganti base class dengan derived class dapat menimbulkan perilaku yang tidak terduga.
+
+</details>
