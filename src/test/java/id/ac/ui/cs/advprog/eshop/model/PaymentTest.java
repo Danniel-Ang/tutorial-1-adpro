@@ -1,6 +1,5 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
-import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +27,7 @@ public class PaymentTest {
             }
         };
         assertEquals("CUSTOM_METHOD", payment.getMethod());
-        assertEquals(PaymentStatus.WAITING_PAYMENT, payment.getStatus());
+        assertEquals("WAITING_PAYMENT", payment.getStatus());
     }
 
     @Test
@@ -39,8 +38,8 @@ public class PaymentTest {
                 this.paymentData = paymentData;
             }
         };
-        payment.setStatus(PaymentStatus.SUCCESS);
-        assertEquals(PaymentStatus.SUCCESS, payment.getStatus());
+        payment.setStatus("SUCCESS");
+        assertEquals("SUCCESS", payment.getStatus());
     }
 
     @Test
@@ -51,6 +50,6 @@ public class PaymentTest {
                 this.paymentData = paymentData;
             }
         };
-        assertThrows(IllegalArgumentException.class, () -> payment.setStatus(null));
+        assertThrows(IllegalArgumentException.class, () -> payment.setStatus("INVALID_STATUS"));
     }
 }
