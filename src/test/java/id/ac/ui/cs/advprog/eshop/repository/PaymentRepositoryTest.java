@@ -80,4 +80,15 @@ public class PaymentRepositoryTest {
         Payment duplicate = new Payment(payments.get(0).getId(), sampleOrder, "BANK_TRANSFER", payments.get(0).getPaymentData());
         assertThrows(IllegalStateException.class, () -> paymentRepository.save(duplicate));
     }
+
+    @Test
+    void testDeletePayment() {
+        Payment payment = payments.get(0);
+        paymentRepository.save(payment);
+
+        paymentRepository.delete(payment.getId());
+
+        assertNull(paymentRepository.findById(payment.getId()), "Payment should be removed from repository.");
+    }
+
 }
