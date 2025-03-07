@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import lombok.Getter;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +11,7 @@ public class Payment {
     private String method;
     private Map<String, String> paymentData;
     private Order order;
-    private String status;
+    private PaymentStatus status;
 
     public Payment(String id, Order order, String method, Map<String, String> paymentData) {
         this(order, method, paymentData);
@@ -21,12 +22,12 @@ public class Payment {
         this.id = UUID.randomUUID().toString();
         this.order = order;
         this.method = method;
-        this.status = "WAITING_PAYMENT";
+        this.status = PaymentStatus.WAITING_PAYMENT;
         this.setPaymentData(paymentData);
     }
 
-    public void setStatus(String status) {
-        if (status.equals("WAITING_PAYMENT") || status.equals("SUCCESS") || status.equals("FAILED") || status.equals("CANCELLED")) {
+    public void setStatus(PaymentStatus status) {
+        if (status != null) {
             this.status = status;
         } else {
             throw new IllegalArgumentException("Invalid payment status");
