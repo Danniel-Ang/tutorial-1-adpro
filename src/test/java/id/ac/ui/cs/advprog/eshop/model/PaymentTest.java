@@ -41,7 +41,7 @@ public class PaymentTest {
     @Test
     void testCreatePaymentSuccessfulVoucher() {
         Map<String, String> paymentDataVoucher = new HashMap<>();
-        paymentDataVoucher.put("voucherCode", "ESHOP12345678JOIN");
+        paymentDataVoucher.put("voucherCode", "ESHOP12345678JOI");
         Payment payment1 = new Payment("danniel", orders.get(1), "VOUCHER", paymentDataVoucher);
         assertSame(this.orders.get(1), payment1.getOrder());
         assertEquals(paymentDataVoucher, payment1.getPaymentData());
@@ -62,5 +62,24 @@ public class PaymentTest {
         paymentDataBank.put("bankName", "");
         paymentDataBank.put("referenceCode", "987654");
         assertThrows(IllegalArgumentException.class, () -> new Payment("ayojoincompetition", orders.get(1), "BANK_TRANSFER", paymentDataBank));
+    }
+    @Test
+    void testSetPaymentStatusToSuccess() {
+        Map<String, String> paymentDataBank = new HashMap<>();
+        paymentDataBank.put("bankName", "Bank XYZ");
+        paymentDataBank.put("referenceCode", "123456");
+        Payment payment = new Payment("a0f9de46-90b1-437d-a0bf-d0821dde9096", orders.get(1), "BANK_TRANSFER", paymentDataBank);
+        payment.setStatus("SUCCESS");
+        assertEquals("SUCCESS", payment.getStatus());
+    }
+
+    @Test
+    void testSetPaymentStatusToFailed() {
+        Map<String, String> paymentDataBank = new HashMap<>();
+        paymentDataBank.put("bankName", "Bank XYZ");
+        paymentDataBank.put("referenceCode", "123456");
+        Payment payment = new Payment("a0f9de46-90b1-437d-a0bf-d0821dde9096", orders.get(1), "BANK_TRANSFER", paymentDataBank);
+        payment.setStatus("FAILED");
+        assertEquals("FAILED", payment.getStatus());
     }
 }
