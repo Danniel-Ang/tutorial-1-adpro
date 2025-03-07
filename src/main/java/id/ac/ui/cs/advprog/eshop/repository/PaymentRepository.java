@@ -9,14 +9,23 @@ public class PaymentRepository {
     private final List<Payment> paymentStorage = new ArrayList<>();
 
     public Payment save(Payment payment) {
-        return null;
+        if (findById(payment.getId()) != null) {
+            throw new IllegalStateException("Payment with ID " + payment.getId() + " already exists.");
+        }
+        paymentStorage.add(payment);
+        return payment;
     }
 
     public Payment findById(String id) {
+        for (Payment p : paymentStorage) {
+            if (p.getId().equals(id)) {
+                return p;
+            }
+        }
         return null;
     }
 
     public List<Payment> findAll() {
-        return null;
+        return new ArrayList<>(paymentStorage);
     }
 }
