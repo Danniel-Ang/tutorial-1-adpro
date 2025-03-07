@@ -37,4 +37,23 @@ public class PaymentTest {
         paymentData.put("referenceCode", "");
         assertThrows(IllegalArgumentException.class, () -> new Payment("1", "BANK_TRANSFER", "PENDING", paymentData));
     }
+
+    @Test
+    void testSetPaymentStatusToSuccess() {
+        payment = new Payment("1", "BANK_TRANSFER", "PENDING", paymentData);
+        payment.setStatus("SUCCESS");
+        assertEquals("SUCCESS", payment.getStatus());
+    }
+
+    @Test
+    void testSetPaymentStatusToRejected() {
+        payment = new Payment("1", "BANK_TRANSFER", "PENDING", paymentData);
+        payment.setStatus("REJECTED");
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testInvalidPaymentMethod() {
+        assertThrows(IllegalArgumentException.class, () -> new Payment("1", "INVALID_METHOD", "PENDING", paymentData));
+    }
 }
