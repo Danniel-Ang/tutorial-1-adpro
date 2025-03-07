@@ -8,24 +8,48 @@ import java.util.List;
 import java.util.Map;
 
 public class PaymentServiceImpl implements PaymentService {
+    private final PaymentRepository paymentRepository;
+
+    public PaymentServiceImpl(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
-       return null;
+        Payment payment = new Payment(order, method, paymentData);
+        return paymentRepository.save(payment);
     }
 
     @Override
     public Payment setStatus(Payment payment, PaymentStatus status) {
-        return null;
+        if (payment == null) {
+            throw new IllegalArgumentException("Payment not found");
+        }
+        payment.setStatus(status);
+        if (status == PaymentStatus.SUCCESS) {
+            payment.getOrder().setStatus(PaymentStatus.SUCCESS.getValue());
+        } else if (status == PaymentStatus.REJECTED) {
+            payment.getOrder().setStatus("FAILED");
+        }
+        return payment;
     }
 
     @Override
     public Payment getPayment(String paymentId) {
-        return null;
+        return paymentRepository.findById(paymentId);
     }
 
     @Override
     public List<Payment> getAllPayments() {
-        return null;
+        return paymentRepository.findAll();
+    }
+
+    @Override
+    public void deletePayment(String paymentId) {
+        Payment payment = paymentRepository.findById(paymentId);
+        if (payment == null) {
+            throw new IllegalArgumentException("Payment not found");
+        }
+        paymentRepository.delete(paymentId);
     }
 }

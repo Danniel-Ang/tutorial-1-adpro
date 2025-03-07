@@ -11,4 +11,5 @@ public interface PaymentService {
     Payment setStatus(Payment payment, PaymentStatus status);
     Payment getPayment(String paymentId);
     List<Payment> getAllPayments();
+    void deletePayment(String paymentId);
 }
