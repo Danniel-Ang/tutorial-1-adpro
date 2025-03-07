@@ -16,21 +16,16 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
+        validateAddPaymentParameters(order, method, paymentData);
         Payment payment = new Payment(order, method, paymentData);
         return paymentRepository.save(payment);
     }
 
     @Override
     public Payment setStatus(Payment payment, PaymentStatus status) {
-        if (payment == null) {
-            throw new IllegalArgumentException("Payment not found");
-        }
+        validatePaymentNotNull(payment);
         payment.setStatus(status);
-        if (status == PaymentStatus.SUCCESS) {
-            payment.getOrder().setStatus(PaymentStatus.SUCCESS.getValue());
-        } else if (status == PaymentStatus.REJECTED) {
-            payment.getOrder().setStatus("FAILED");
-        }
+        updateOrderStatus(payment.getOrder(), status);
         return payment;
     }
 
@@ -53,4 +48,26 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.delete(paymentId);
     }
 
+    // Helper methods for validation and update
+
+    private void validateAddPaymentParameters(Order order, String method, Map<String, String> paymentData) {
+        if (order == null || method == null || paymentData == null) {
+            throw new IllegalArgumentException("Invalid payment details");
+        }
+    }
+
+    private void validatePaymentNotNull(Payment payment) {
+        if (payment == null) {
+            throw new IllegalArgumentException("Payment not found");
+        }
+    }
+
+    private void updateOrderStatus(Order order, PaymentStatus status) {
+        if (order == null) return;
+        if (status == PaymentStatus.SUCCESS) {
+            order.setStatus(PaymentStatus.SUCCESS.getValue());
+        } else if (status == PaymentStatus.REJECTED) {
+            order.setStatus("FAILED");
+        }
+    }
 }
