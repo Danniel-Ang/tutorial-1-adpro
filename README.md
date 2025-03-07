@@ -165,3 +165,25 @@ Berdasarkan workflow yang telah saya buat, proses CI telah berjalan dengan baik 
    - *Contoh:* Jika LSP tidak diikuti, mengganti base class dengan derived class dapat menimbulkan perilaku yang tidak terduga.
 
 </details>
+
+<details>
+<summary> Tutorial 4 </summary>
+
+## Refleksi Mengenai TDD dan Prinsip F.I.R.S.T.
+
+### 1. Refleksi Alur TDD (RED → GREEN → REFACTOR)
+Menurut pengalaman saya, pendekatan Test-Driven Development (TDD) sangat membantu dalam pengembangan, terutama dengan siklus **RED → GREEN → REFACTOR**. Menulis tes terlebih dahulu mendorong pemahaman yang lebih jelas tentang kebutuhan kode dan memastikan desain yang lebih terstruktur. Hal ini juga sejalan dengan pertanyaan reflektif dari **Percival (2017)**, seperti memastikan tes mencerminkan perilaku sistem yang diharapkan dan mengantisipasi potensi kegagalan.
+
+Namun, saya mengalami kesulitan dalam merancang kasus **RED** yang representatif. Ke depan, saya berencana untuk:
+
+- **Mendefinisikan skenario kegagalan lebih baik** agar mencakup berbagai kemungkinan error.
+- **Melibatkan rekan tim dalam brainstorming** untuk mendapatkan perspektif lebih.
+- **Menggunakan data uji yang lebih beragam** guna menguji berbagai kondisi sistem.
+- **Melakukan evaluasi dan refactoring tes berkala** agar tetap relevan dan efektif.
+
+Menurut saya cara ini akan sangat membantu ketika kita kesulitan di salah satu tahap TDD.
+
+### 2. Refleksi Unit Test Berdasarkan Prinsip F.I.R.S.T.
+
+Secara keseluruhan, unit test yang saya buat sudah cukup mengikuti prinsip F.I.R.S.T. dan telah meminimalkan kesalahan-kesalahan yang umum terjadi, seperti menjaga kecepatan eksekusi, kemandirian, dan konsistensi hasil. Namun, masih terdapat beberapa aspek yang perlu diperbaiki, terutama dalam hal validasi skenario kompleks dan pengurangan ketergantungan eksternal, yang bisa dioptimalkan melalui proses refactoring. Kedepannya, saya berencana untuk melakukan refactoring secara berkala guna mencegah munculnya masalah tersebut dan memastikan bahwa test suite selalu optimal serta responsif terhadap perubahan dalam kode.
+</details>
