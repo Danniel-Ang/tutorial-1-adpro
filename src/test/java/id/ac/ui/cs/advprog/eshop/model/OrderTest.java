@@ -36,8 +36,8 @@ public class OrderTest {
 
     @Test
     void testCreateOrderDefaultStatus() {
-        Order order = new Order( id: "13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, orderTime: 1708560000L, author: "Safira Sudrajat");
+        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
+                this.products, 1708560000L,"Safira Sudrajat");
 
         assertSame(this.products, order.getProducts());
         assertEquals(2, order.getProducts().size());
@@ -52,8 +52,8 @@ public class OrderTest {
 
     @Test
     void testCreateOrderSuccessStatus() {
-        Order order = new Order( id: "13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, orderTime: 1708560000L, author: "Safira Sudrajat", status: "SUCCESS");
+        Order order = new Order(  "13652556-012a-4c07-b546-54eb1396d79b",
+                this.products,  1708560000L,  "Safira Sudrajat", "SUCCESS");
 
         assertEquals("SUCCESS", order.getStatus());
     }
@@ -61,15 +61,15 @@ public class OrderTest {
     @Test
     void testCreateOrderInvalidStatus() {
         assertThrows(IllegalArgumentException.class, () -> {
-            Order order = new Order( id: "13652556-012a-4c07-b546-54eb1396d79b",
-                    this.products, orderTime: 1708560000L, author: "Safira Sudrajat", status: "MEOW");
+            Order order = new Order( "13652556-012a-4c07-b546-54eb1396d79b",
+                    this.products, 1708560000L, "Safira Sudrajat",  "MEOW");
         });
     }
 
     @Test
     void testSetStatusToCancelled() {
-        Order order = new Order( id: "13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, orderTime: 1708560000L, author: "Safira Sudrajat");
+        Order order = new Order(  "13652556-012a-4c07-b546-54eb1396d79b",
+                this.products,  1708560000L,  "Safira Sudrajat");
 
         order.setStatus("CANCELLED");
         assertEquals("CANCELLED", order.getStatus());
@@ -78,6 +78,6 @@ public class OrderTest {
     @Test
     void testSetStatusToInvalidStatus() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b", this.products, 1708560000L, "Safira Sudrajat");
-
+    }
 }
 
